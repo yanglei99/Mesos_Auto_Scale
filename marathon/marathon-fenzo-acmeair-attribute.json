@@ -1,0 +1,28 @@
+{
+	  "container": {
+		    "type": "DOCKER",
+		    "docker": {
+		      "image": "yanglei99/spark_mesos",
+		      "network": "HOST",
+		      "portMappings": [ ]
+		    },
+			"volumes": [
+			      {
+			    	  "containerPath": "/spark/job/fenzo-framework.jar",
+			    	  "hostPath": "./fenzo-framework.jar",
+			          "mode": "RW"
+			      }
+			]
+		  },
+    "id": "framework-fenzo-acmeair-attribute",
+    "cpus": 1,
+    "mem": 1024,
+    "instances": 1,
+    "acceptedResourceRoles": ["slave_public"],
+    "uris": [
+             "https://s3-us-west-1.amazonaws.com/mydata.yl/fenzo-framework.jar"
+             ],
+    "env": {
+    },
+    "cmd": "java -classpath /spark/job/fenzo-framework.jar com.mesos.framework.fenzo.FenzoFramework leader.mesos:5050 acmeair yanglei99/acmeair-nodejs 2 MONGO_URL=mongodb://task-mongo.mongo.mesos:27017/acmeair task.fenzo.host.attribute=framework:acmeair task.softlayer.user=your_user task.softlayer.api=your_api task.softlayer.scale.group=your_group"
+}

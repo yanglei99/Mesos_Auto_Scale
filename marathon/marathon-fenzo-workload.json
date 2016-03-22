@@ -1,0 +1,28 @@
+{
+	  "container": {
+		    "type": "DOCKER",
+		    "docker": {
+		      "image": "yanglei99/spark_mesos",
+		      "network": "HOST",
+		      "portMappings": [ ]
+		    },
+			"volumes": [
+			      {
+			    	  "containerPath": "/spark/job/fenzo-framework.jar",
+			    	  "hostPath": "./fenzo-framework.jar",
+			          "mode": "RW"
+			      }
+			]
+		  },
+    "id": "framework-fenzo-workload",
+    "cpus": 1,
+    "mem": 1024,
+    "instances": 1,
+    "acceptedResourceRoles": ["slave_public"],
+    "uris": [
+             "https://s3-us-west-1.amazonaws.com/mydata.yl/fenzo-framework.jar"
+             ],
+    "env": {
+    },
+    "cmd": "java -classpath /spark/job/fenzo-framework.jar com.mesos.framework.fenzo.FenzoFramework leader.mesos:5050 acmeair-workload yanglei99/acmeair-workload 2 APP_PORT_9080_TCP_ADDR=task-acmeair.acmeair.mesos NUM_THREAD=10 LOOP_COUNT=10000 task.mesos.scale.up.max.multiplier=0"
+}

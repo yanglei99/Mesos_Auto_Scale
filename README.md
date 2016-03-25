@@ -1,6 +1,6 @@
 # Mesos_Auto_Scale
 
-This is a simple generic Mesos Framework that integrates with [Fenzo Scheduler](https://github.com/Netflix/Fenzo/wiki/Getting-Started) to demonstrate elasticity on the cloud. It leverages Softlayer Auto Scale Group for platform elasticity; it interacts with mesos monitor REST API to determine process elasticity.
+This is a simple generic Mesos Framework that integrates with [Fenzo Scheduler](https://github.com/Netflix/Fenzo/wiki/Getting-Started) to demonstrate elasticity on the cloud. It leverages Softlayer Auto Scale Group for platform elasticity; it interacts with mesos monitor REST API to determine process elasticity. The framework also recover tasks if it is lost.
 
 ![Image of Elastic with Fenzo on Mesos](images/fenzo_mesos_elastic.jpg)
 
@@ -106,7 +106,6 @@ task.mesos.threshold.max.match.all|false| when set to true only trigger scale up
 task.mesos.threshold.min.match.all|false| when set to true only trigger scale down when both CPU and MEM are over the limit (AND); when set to false, only need to match one condition (OR)
 task.mesos.scale.multiplier|0.2| the multiplier to scale up and down
 task.mesos.scale.up.max.multiplier|2| the max scale up multiplier. max_instances== multiplier*your-number-of-instances. min_instances==your-number-of-instances.
-task.mesos.scale.match.all|false| when set to true only trigger scale up/down when both CPU and MEM are over the limit (AND); when set to false, only need to match one condition (OR)
 task.mesos.monitor.interval|5|check task resource usage every n seconds
 
 ## Known Limitations

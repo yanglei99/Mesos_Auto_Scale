@@ -193,18 +193,19 @@ public class MesosMonitor implements TaskMonitor {
 		 if (totalMem > thresholds.get(MEM_THRESHOLD_MAX_KEY))
 			 scaleUpUsage.put(MEM_THRESHOLD_MAX_KEY, totalMem);
 		 
+		 // Scale down need to check negative situation due to instance just scaled down the number will not be accurate
 		 Map<String, Float> scaleDownUsage = new HashMap<String, Float>();
-		 if (totalCPU < thresholds.get(CPU_THRESHOLD_MIN_KEY))
+		 if (totalCPU > 0 && totalCPU < thresholds.get(CPU_THRESHOLD_MIN_KEY))
 			 scaleDownUsage.put(CPU_THRESHOLD_MIN_KEY, totalCPU);
-		 if (totalMem < thresholds.get(MEM_THRESHOLD_MIN_KEY))
+		 if (totalMem > 0 && totalMem < thresholds.get(MEM_THRESHOLD_MIN_KEY))
 			 scaleDownUsage.put(MEM_THRESHOLD_MIN_KEY, totalMem);
 		 
 		 
- 		  if (satisfyScaleMatch(this.thresholdMaxMatchAll,scaleUpUsage.size())) // Scale up take precedents 
+		 // Use taskCount to determine scale, than desiredInstances in case there is a difference
+ 		 if (satisfyScaleMatch(this.thresholdMaxMatchAll,scaleUpUsage.size())) // Scale up take precedents 
 		 {
 			 this.lastOverThresholdInTS.set(currentTS);
 			 this.lastOverThresholdReason.set(scaleUpUsage);
-   			 // Use taskCount to determine scale, than desiredInstances in case there is a difference
    			 int scaleup = taskCount + (int) Math.ceil(multiplier * taskCount);
    			 if (scaleup > maxInstances) scaleup= maxInstances;
    			 if (desiredInstances.getAndSet(scaleup) < scaleup)
